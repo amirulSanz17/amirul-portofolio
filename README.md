@@ -1,35 +1,70 @@
-# Portfolio — Amirul Ichsandina
+# Portfolio Personal — Amirul Ichsandina
 
-Personal portfolio website built with React, TypeScript, and Tailwind CSS v4.
+Website portfolio pribadi yang menampilkan profil, pengalaman kerja, project, pencapaian, aktivitas, keterampilan, dan informasi kontak secara modern dan rapi. Proyek ini dibuat dengan React, TypeScript, dan Tailwind CSS v4, dengan fokus pada tampilan yang profesional, responsif, dan mudah dikelola dari satu sumber data.
 
-## Tech Stack
+## Tentang Website Ini
 
-- **React 19** + TypeScript
-- **Tailwind CSS v4** (via Vite plugin)
-- **Vite 8**
-- No backend — semua konten diatur dari satu file data
+Portofolio ini berfungsi sebagai ruang digital untuk memperkenalkan diri secara profesional kepada recruiter, client, rekan kerja, maupun komunitas. Di dalamnya terdapat beberapa section penting seperti:
+
+- Hero section dengan profil singkat
+- About / biodata personal
+- Skill dan kompetensi
+- Pengalaman kerja dan kontribusi
+- Project yang pernah dibangun
+- Achievement dan penghargaan
+- Aktivitas organisasi dan kegiatan
+- Informasi kontak serta sosial media
+
+Tujuannya adalah menampilkan identitas, kemampuan teknis, serta perjalanan profesional dengan tampilan yang modern dan mudah dibaca.
 
 ---
 
-## Cara Menjalankan
+## Teknologi yang Digunakan
+
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Vite 8
+- No backend — seluruh konten dikelola dari file data tunggal
+
+---
+
+## Fitur Utama
+
+- Tampilan responsif untuk desktop, tablet, dan mobile
+- Desain portfolio yang modern dan minimalis
+- Data konten disimpan terpusat di `src/data/portfolio.ts`
+- Section project dan experience yang mudah diperbarui
+- Support galeri foto untuk project, achievement, dan activity
+- Integrasi link GitHub, LinkedIn, dan email
+
+---
+
+## Cara Menjalankan Project
 
 ```bash
-# Install dependencies
+# install dependencies
 pnpm install
 
-# Jalankan development server
+# jalankan development server
 pnpm dev
 ```
 
-Buka browser di `http://localhost:5173` (atau port yang ditampilkan di terminal).
+Setelah itu, buka browser pada:
+
+```bash
+http://localhost:5173
+```
+
+Jika port berubah, gunakan port yang ditampilkan di terminal.
 
 ---
 
-## Struktur Folder
+## Struktur Project
 
-```
+```bash
 src/
-├── components/       # Semua section UI
+├── components/         # Semua section UI website
 │   ├── Navbar.tsx
 │   ├── Hero.tsx
 │   ├── About.tsx
@@ -42,15 +77,16 @@ src/
 │   ├── Footer.tsx
 │   └── Lightbox.tsx
 ├── data/
-│   └── portfolio.ts  # ← EDIT FILE INI untuk mengubah konten
+│   └── portfolio.ts    # File utama untuk mengubah konten portfolio
 ├── hooks/
 │   └── useInView.ts
 ├── App.tsx
 ├── main.tsx
-└── index.css
+├── index.css
+└── vite-env.d.ts
 
 public/
-└── images/           # Taruh semua foto di sini
+└── images/             # Folder untuk menyimpan foto dan gambar portfolio
     ├── profile/
     ├── experience/
     ├── projects/
@@ -60,37 +96,47 @@ public/
 
 ---
 
-## Cara Update Konten
+## Cara Mengubah Konten Portfolio
 
-Semua konten dikelola dari satu file: **`src/data/portfolio.ts`**
+Semua data utama berada di file:
 
-### Ganti Foto Profil
+- `src/data/portfolio.ts`
 
-Dua tempat foto ada di file component:
+Dengan mengubah file ini, Anda dapat mengganti:
 
-- **Hero**: `src/components/Hero.tsx` — cari variabel `PROFILE_PHOTO`
-- **About**: `src/components/About.tsx` — cari variabel `PROFILE_PHOTO`
+- nama dan profil
+- bio singkat
+- kontak
+- skill
+- pengalaman kerja
+- project
+- achievement
+- activity
+- foto profil dan galeri
 
-Ganti nilainya dengan path foto kamu:
+### Contoh mengubah profil
+
 ```ts
-const PROFILE_PHOTO = "/images/profile/foto-saya.jpg";
+export const profile = {
+  name: "Amirul Ichsandina",
+  email: "email-kamu@gmail.com",
+  github: "https://github.com/username-kamu",
+  linkedin: "https://linkedin.com/in/username-kamu",
+  location: "Karawang, Indonesia",
+};
 ```
 
-Taruh file foto di: `public/images/profile/foto-saya.jpg`
-
-### Tambah/Edit Experience
-
-Buka `src/data/portfolio.ts`, cari array `experiences`, tambahkan objek baru:
+### Contoh menambah pengalaman kerja
 
 ```ts
 {
-  id: "exp-4",                          // ID unik
+  id: "exp-4",
   company: "Nama Perusahaan",
   position: "Posisi Kamu",
   location: "Kota, Indonesia",
   date: "Jan 2026 – Jul 2026",
   image: "/images/experience/nama/cover.jpg",
-  description: "Deskripsi singkat.",
+  description: "Deskripsi singkat tentang pengalaman kerja.",
   responsibilities: [
     "Tanggung jawab 1",
     "Tanggung jawab 2",
@@ -100,20 +146,16 @@ Buka `src/data/portfolio.ts`, cari array `experiences`, tambahkan objek baru:
     "/images/experience/nama/foto-1.jpg",
     "/images/experience/nama/foto-2.jpg",
   ],
-},
+}
 ```
 
-### Tambah Project
-
-Baca komentar lengkap di `src/components/Projects.tsx` untuk panduan lengkap beserta struktur folder gambar.
-
-Singkatnya, tambahkan ke array `projects` di `portfolio.ts`:
+### Contoh menambah project
 
 ```ts
 {
   id: "proj-4",
   name: "Nama Project",
-  description: "Deskripsi singkat.",
+  description: "Deskripsi singkat project.",
   role: "Full Stack Developer",
   category: "Web Application",
   tech: ["Laravel", "MySQL"],
@@ -126,85 +168,53 @@ Singkatnya, tambahkan ke array `projects` di `portfolio.ts`:
   screenshots: [
     "/images/projects/nama/ss-1.jpg",
   ],
-},
-```
-
-### Tambah Achievement
-
-```ts
-{
-  id: "ach-4",
-  title: "Judul Penghargaan",
-  event: "Nama Event",
-  organizer: "Penyelenggara",
-  date: "Bulan Tahun",
-  position: "1st Place",
-  positionColor: "gold",   // "gold" | "silver" | "bronze" | "blue"
-  description: "Deskripsi.",
-  role: "Team Leader",
-  image: "/images/achievements/nama/cover.jpg",
-  gallery: [
-    "/images/achievements/nama/foto-1.jpg",
-  ],
-},
-```
-
-### Tambah Activity
-
-```ts
-{
-  id: "act-7",
-  title: "Judul Kegiatan",
-  category: "Work",         // "Work" | "Project" | "Organization" | "Competition" | "Campus" | "Other"
-  date: "Jan 2026",
-  location: "Karawang, Indonesia",
-  description: "Deskripsi singkat.",
-  image: "/images/activities/nama/cover.jpg",
-  gallery: [
-    "/images/activities/nama/foto-1.jpg",
-  ],
-  whatIDid: "Apa yang saya lakukan.",
-  whatILearned: "Apa yang saya pelajari.",
-  skillsUsed: ["Skill 1", "Skill 2"],
-},
-```
-
-### Edit Skills
-
-```ts
-// Di src/data/portfolio.ts
-export const skills = {
-  technical: ["Skill baru", ...],
-  programming: ["Tech baru", ...],
-  soft: ["Soft skill baru", ...],
-};
+}
 ```
 
 ---
 
-## Ganti Informasi Kontak
+## Menambahkan Foto
 
-Di `src/data/portfolio.ts`, ubah objek `profile`:
+Tempatkan foto yang ingin ditampilkan ke folder public sesuai kategori:
+
+- `public/images/profile/`
+- `public/images/experience/`
+- `public/images/projects/`
+- `public/images/achievements/`
+- `public/images/activities/`
+
+Contoh path foto:
 
 ```ts
-export const profile = {
-  name: "Amirul Ichsandina",
-  email: "email-kamu@gmail.com",
-  github: "https://github.com/username-kamu",
-  linkedin: "https://linkedin.com/in/username-kamu",
-  location: "Kota, Indonesia",
-  // ...
-};
+const PROFILE_PHOTO = "/images/profile/foto-saya.jpg";
 ```
 
 ---
 
-## Build untuk Production
+## Build untuk Produksi
 
 ```bash
 pnpm build
 ```
 
-Output ada di folder `dist/`. Siap di-deploy ke Vercel, Netlify, atau hosting lainnya.
+Hasil build akan dibuat di folder:
 
-Lihat **DEPLOY.md** untuk panduan deployment lengkap.
+```bash
+dist/
+```
+
+Folder tersebut siap di-deploy ke Vercel, Netlify, atau hosting lain yang mendukung static site.
+
+---
+
+## Dokumentasi Tambahan
+
+Untuk panduan deployment lebih lengkap, lihat file:
+
+- `DEPLOY.md`
+
+---
+
+## Kesimpulan
+
+Proyek ini dibuat sebagai personal portfolio website yang modern, profesional, dan mudah dikelola. Dengan struktur data yang terorganisir, Anda dapat memperbarui isi portofolio tanpa perlu mengubah banyak komponen UI secara manual.
