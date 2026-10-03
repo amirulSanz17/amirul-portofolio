@@ -1,0 +1,72 @@
+/* ── Touch device active states ── */
+@media (hover: none) and (pointer: coarse) {
+  .card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .card:active {
+    transform: scale(0.98) !important;
+    background: var(--bg-card-hover) !important;
+    transition-duration: 0.1s !important;
+  }
+  .btn-primary:hover {
+    transform: none;
+    box-shadow: none;
+    opacity: 1;
+  }
+  .btn-primary:active {
+    opacity: 0.75;
+    transform: scale(0.95) !important;
+  }
+  .btn-outline:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .btn-outline:active {
+    background: var(--accent-dim) !important;
+    color: var(--accent) !important;
+  }
+  .btn-ghost:hover {
+    transform: none;
+  }
+  .btn-ghost:active {
+    color: var(--fg) !important;
+    background: var(--tag-bg) !important;
+  }
+  .filter-pill:hover {
+    transform: none;
+  }
+  .filter-pill:active {
+    background: var(--accent-light) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    transform: scale(0.95) !important;
+  }
+  .tag:hover {
+    transform: none;
+  }
+  .tag:active {
+    background: var(--accent-dim) !important;
+    color: var(--accent) !important;
+  }
+  .theme-toggle:hover {
+    transform: none;
+  }
+  .theme-toggle:active {
+    transform: scale(0.9) !important;
+  }
+}
+
+/* ── Light theme specific overrides for section borders ── */
+[data-theme="light"] .section-alt {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .modal-content {
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+}
+[data-theme="light"] .btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(45, 91, 227, 0.28);
+}
+[data-theme="light"] .btn-outline:hover {
+  box-shadow: 0 4px 14px rgba(45, 91, 227, 0.15);
+}

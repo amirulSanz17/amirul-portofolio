@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { experiences, type Experience } from "../data/portfolio";
+import { type Experience } from "../data/portfolio";
 import Lightbox from "./Lightbox";
 import { adaptiveGrid } from "../utils/grid";
+import { sortByLatestDate } from "../utils/dateRange";
+import { supabase } from "../lib/supabase";
 
 /* ── shared close button ── */
 function CloseBtn({ onClick }: { onClick: () => void }) {
@@ -121,8 +123,35 @@ function ExperienceModal({ exp, onClose }: { exp: Experience; onClose: () => voi
 
 export default function Experience() {
   const ref      = useRef<HTMLElement>(null);
+  const [experiences, setExperiences] = useState<Experience[]>([]);
   const [selected, setSelected] = useState<Experience | null>(null);
+  const [dataError, setDataError] = useState("");
   const gridStyle = adaptiveGrid(experiences.length);
+
+  useEffect(() => {
+    let active = true;
+    supabase.from("experiences").select("*").order("created_at", { ascending: false }).then(({ data, error }) => {
+      if (!active) return;
+      if (error) {
+        console.error("Supabase experiences error:", error.message);
+        setDataError(error.message);
+        return;
+      }
+      setExperiences(sortByLatestDate((data ?? []).map((row) => ({
+        id: row.id,
+        company: row.company ?? "",
+        position: row.position ?? "",
+        location: row.location ?? "",
+        date: row.date ?? "",
+        image: row.image ?? "",
+        description: row.description ?? "",
+        responsibilities: row.responsibilities ?? [],
+        skills: row.skills ?? [],
+        gallery: row.gallery ?? [],
+      }))));
+    });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -151,6 +180,7 @@ export default function Experience() {
           <h2 className="section-title reveal" style={{ marginBottom: "2.5rem" }}>
             Where I've worked
           </h2>
+          {dataError && <p role="alert" style={{ color: "var(--fg-muted)", marginBottom: "1rem" }}>Could not load experience data: {dataError}</p>}
 
           <div style={gridStyle} className="exp-grid">
             {experiences.map((exp, i) => (
@@ -161,7 +191,7 @@ export default function Experience() {
                 onClick={() => setSelected(exp)}
               >
                 {/* image with zoom */}
-                <div style={{ aspectRatio: "16/9", background: "var(--bg-alt)", overflow: "hidden", position: "relative" }}>
+                <div style={{ aspectRatio: "4/3", background: "var(--bg-alt)", overflow: "hidden", position: "relative" }}>
                   <img
                     src={exp.image} alt={exp.company}
                     className="img-cover" loading="lazy"

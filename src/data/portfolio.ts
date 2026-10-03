@@ -12,7 +12,7 @@ export const profile = {
     "I am an Information Systems student passionate about technology, system analysis, product development, and digital solutions. I enjoy learning through hands-on projects, team collaboration, and real-world experiences — from web application development to IoT deployment and network infrastructure.",
   education: "Information Systems — Universitas Singaperbangsa Karawang",
   status: "Open to internship & collaboration",
-  interests: ["System Analysis", "Product Development", "IoT", "Web Development", "Digital Solutions"],
+  interests: ["Bussiness Analyst", "Network Engineer", "Product Development", "Web Development"],
 };
 
 export const skills = {
@@ -24,7 +24,6 @@ export const skills = {
     "Web Development",
     "Database Design",
     "Network Configuration",
-    "IoT Systems",
   ],
   programming: ["PHP", "Laravel", "JavaScript", "React", "MySQL", "HTML", "CSS", "Git", "GitHub"],
   soft: [
@@ -124,6 +123,7 @@ export const experiences: Experience[] = [
 export interface Project {
   id: string;
   name: string;
+  date?: string;
   description: string;
   role: string;
   category: string;

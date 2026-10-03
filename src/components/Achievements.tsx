@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { achievements, type Achievement } from "../data/portfolio";
+import { type Achievement } from "../data/portfolio";
 import Lightbox from "./Lightbox";
 import { adaptiveGrid } from "../utils/grid";
+import { sortByLatestDate } from "../utils/dateRange";
+import { supabase } from "../lib/supabase";
 
 const badge: Record<string, { label: string; color: string; bg: string; border: string }> = {
   gold:   { label: "🥇 1st Place",  color: "#f59e0b", bg: "rgba(245,158,11,0.1)",  border: "rgba(245,158,11,0.25)" },
@@ -111,8 +113,36 @@ function AchievementModal({ ach, onClose }: { ach: Achievement; onClose: () => v
 
 export default function Achievements() {
   const ref    = useRef<HTMLElement>(null);
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [selected, setSelected] = useState<Achievement | null>(null);
+  const [dataError, setDataError] = useState("");
   const gridStyle = adaptiveGrid(achievements.length);
+
+  useEffect(() => {
+    let active = true;
+    supabase.from("achievements").select("*").order("created_at", { ascending: false }).then(({ data, error }) => {
+      if (!active) return;
+      if (error) {
+        console.error("Supabase achievements error:", error.message);
+        setDataError(error.message);
+        return;
+      }
+      setAchievements(sortByLatestDate((data ?? []).map((row) => ({
+        id: row.id,
+        title: row.title ?? "",
+        event: row.event ?? "",
+        organizer: row.organizer ?? "",
+        date: row.date ?? "",
+        position: row.position ?? "",
+        positionColor: row.position_color ?? "blue",
+        description: row.description ?? "",
+        role: row.role ?? "",
+        image: row.image ?? "",
+        gallery: row.gallery ?? [],
+      }))));
+    });
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -141,6 +171,7 @@ export default function Achievements() {
           <h2 className="section-title reveal" style={{ marginBottom: "2.5rem" }}>
             Milestones & recognition
           </h2>
+          {dataError && <p role="alert" style={{ color: "var(--fg-muted)", marginBottom: "1rem" }}>Could not load achievements: {dataError}</p>}
 
           <div style={gridStyle} className="ach-grid">
             {achievements.map((ach, i) => {
@@ -152,7 +183,7 @@ export default function Achievements() {
                   style={{ overflow: "hidden", cursor: "pointer", transitionDelay: `${i * 0.09}s` }}
                   onClick={() => setSelected(ach)}
                 >
-                  <div style={{ aspectRatio: "16/9", background: "var(--bg-alt)", overflow: "hidden", position: "relative" }}>
+                  <div style={{ aspectRatio: "4/3", background: "var(--bg-alt)", overflow: "hidden", position: "relative" }}>
                     <img
                       src={ach.image} alt={ach.title}
                       className="img-cover" loading="lazy"

@@ -9,7 +9,7 @@ import { profile } from "../data/portfolio";
  * Ukuran ideal:   min 600×750 px, format portrait.
  * ─────────────────────────────────────────────────────────────────────────────
  */
-const PROFILE_PHOTO = "/images/profile/image.png";
+const PROFILE_PHOTO = "/images/profile/image.jpeg";
 
 export default function Hero() {
   const photoRef = useRef<HTMLDivElement>(null);

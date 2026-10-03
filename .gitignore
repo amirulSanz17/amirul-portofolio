@@ -3,10 +3,13 @@ dist/
 build/
 .cache/
 .env*
+.env.local
+.env.*.local
 CONTENT.md
 BACKEND.md
 SETUP.md
 DEPLOY.md
+AGENTS.md
 .vite/
 vite.config.*.timestamp-*
 *.tsbuildinfo

@@ -1,0 +1,61 @@
+/* ── Dark theme (default) ── */
+:root {
+  --bg: #0e0e0e;
+  --bg-alt: #121212;
+  --bg-card: #181818;
+  --bg-card-hover: #202020;
+  --fg: #ececec;
+  --fg-secondary: #b0b0b0;
+  --fg-muted: #686868;
+  --fg-subtle: #343434;
+  --accent: #4d7cff;
+  --accent-light: rgba(77, 124, 255, 0.16);
+  --accent-dim: rgba(77, 124, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.55);
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+  --shadow-hover:
+    0 14px 44px rgba(0, 0, 0, 0.7), 0 4px 14px rgba(0, 0, 0, 0.45);
+  --radius: 10px;
+  --radius-sm: 6px;
+
+  --nav-bg-scrolled: rgba(14, 14, 14, 0.88);
+  --nav-bg-mobile: rgba(14, 14, 14, 0.98);
+  --nav-border: rgba(255, 255, 255, 0.07);
+
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-focus-bg: rgba(77, 124, 255, 0.06);
+  --tag-bg: rgba(255, 255, 255, 0.05);
+  --hero-grid: rgba(255, 255, 255, 0.6);
+}
+
+/* ── Light theme ── */
+[data-theme="light"] {
+  --bg: #f4f3ee;
+  --bg-alt: #eae9e4;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f9f9f6;
+  --fg: #161616;
+  --fg-secondary: #3a3a3a;
+  --fg-muted: #6e6e6e;
+  --fg-subtle: #ababab;
+  --accent: #2d5be3;
+  --accent-light: rgba(45, 91, 227, 0.13);
+  --accent-dim: rgba(45, 91, 227, 0.07);
+  --border: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.18);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.09), 0 1px 8px rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.07);
+  --shadow-hover:
+    0 12px 36px rgba(0, 0, 0, 0.14), 0 3px 10px rgba(0, 0, 0, 0.09);
+
+  --nav-bg-scrolled: rgba(244, 243, 238, 0.92);
+  --nav-bg-mobile: rgba(244, 243, 238, 0.99);
+  --nav-border: rgba(0, 0, 0, 0.1);
+
+  --input-bg: rgba(0, 0, 0, 0.04);
+  --input-focus-bg: rgba(45, 91, 227, 0.05);
+  --tag-bg: rgba(0, 0, 0, 0.05);
+  --hero-grid: rgba(0, 0, 0, 0.45);
+}

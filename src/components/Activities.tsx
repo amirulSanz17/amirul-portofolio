@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { activities, type Activity } from "../data/portfolio";
+import { type Activity } from "../data/portfolio";
 import Lightbox from "./Lightbox";
 import { adaptiveGrid } from "../utils/grid";
+import { sortByLatestDate } from "../utils/dateRange";
+import { supabase } from "../lib/supabase";
 
 const FILTERS = ["All", "Work", "Project", "Organization", "Competition", "Campus", "Other"] as const;
 type FilterVal = typeof FILTERS[number];
@@ -132,9 +134,37 @@ function ActivityModal({ act, onClose }: { act: Activity; onClose: () => void })
 export default function Activities() {
   const ref    = useRef<HTMLElement>(null);
   const [filter,   setFilter]   = useState<FilterVal>("All");
+  const [activities, setActivities] = useState<Activity[]>([]);
   const [selected, setSelected] = useState<Activity | null>(null);
+  const [dataError, setDataError] = useState("");
 
   const filtered = filter === "All" ? activities : activities.filter((a) => a.category === filter);
+
+  useEffect(() => {
+    let active = true;
+    supabase.from("activities").select("*").order("created_at", { ascending: false }).then(({ data, error }) => {
+      if (!active) return;
+      if (error) {
+        console.error("Supabase activities error:", error.message);
+        setDataError(error.message);
+        return;
+      }
+      setActivities(sortByLatestDate((data ?? []).map((row) => ({
+        id: row.id,
+        title: row.title ?? "",
+        category: row.category ?? "Other",
+        date: row.date ?? "",
+        location: row.location ?? "",
+        description: row.description ?? "",
+        image: row.image ?? "",
+        gallery: row.gallery ?? [],
+        whatIDid: row.what_i_did ?? "",
+        whatILearned: row.what_i_learned ?? "",
+        skillsUsed: row.skills_used ?? [],
+      }))));
+    });
+    return () => { active = false; };
+  }, []);
 
   /* grid adapts to visible item count */
   const gridStyle = adaptiveGrid(filtered.length, "1.1rem");
@@ -177,6 +207,7 @@ export default function Activities() {
           <h2 className="section-title reveal" style={{ marginBottom: "1.5rem" }}>
             Documented experiences
           </h2>
+          {dataError && <p role="alert" style={{ color: "var(--fg-muted)", marginBottom: "1rem" }}>Could not load activities: {dataError}</p>}
 
           {/* Filter */}
           <div className="reveal" style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem", marginBottom: "2.25rem" }}>
@@ -212,7 +243,7 @@ export default function Activities() {
                     style={{ overflow: "hidden", cursor: "pointer", transitionDelay: `${i * 0.07}s` }}
                     onClick={() => setSelected(act)}
                   >
-                    <div style={{ aspectRatio: "16/9", background: "var(--bg-alt)", overflow: "hidden", position: "relative" }}>
+                    <div style={{ aspectRatio: "4/3", background: "var(--bg-alt)", overflow: "hidden", position: "relative" }}>
                       <img
                         src={act.image} alt={act.title}
                         className="img-cover" loading="lazy"
