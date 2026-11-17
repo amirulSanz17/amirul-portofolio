@@ -12,7 +12,7 @@ const PROFILE_PHOTO = "/images/profile/image.jpeg"
 
 export default function Hero() {
   const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+    document.getElementById(id)?.scrollIntoView({ behavior: "auto" })
 
   return (
     <section
@@ -147,7 +147,7 @@ export default function Hero() {
                   aria-label={label}
                   style={{
                     color: "var(--fg-muted)",
-                    transition: "color 0.15s, transform 0.15s",
+                    transition: "color 0.15s",
                     display: "flex",
                     alignItems: "center",
                     gap: "0.4rem",
@@ -157,11 +157,9 @@ export default function Hero() {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = "var(--fg)"
-                    e.currentTarget.style.transform = "translateY(-1px)"
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = "var(--fg-muted)"
-                    e.currentTarget.style.transform = "translateY(0)"
                   }}
                 >
                   <svg
@@ -188,16 +186,14 @@ export default function Hero() {
                   color: "var(--fg-muted)",
                   fontSize: "0.83rem",
                   fontWeight: 500,
-                  transition: "color 0.15s, transform 0.15s",
+                  transition: "color 0.15s",
                   cursor: "pointer",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = "var(--fg)"
-                  e.currentTarget.style.transform = "translateY(-1px)"
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.color = "var(--fg-muted)"
-                  e.currentTarget.style.transform = "translateY(0)"
                 }}
               >
                 Email
@@ -230,37 +226,14 @@ export default function Hero() {
                 src={PROFILE_PHOTO}
                 alt="Amirul Ichsandina"
                 className="img-cover"
-                style={{ transition: "transform 0.4s ease" }}
+                width={680}
+                height={840}
+                fetchPriority="high"
               />
             </div>
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (min-width: 769px) {
-          .hero-grid {
-            grid-template-columns: minmax(0, 1fr) minmax(280px, min(480px, 40vw)) !important;
-            gap: clamp(2rem, 5vw, 5rem) !important;
-            padding: 5rem 0 6rem !important;
-          }
-          .hero-eyebrow { font-size: 0.82rem !important; }
-          .hero-title { font-size: clamp(3.6rem, 6vw, 5.8rem) !important; }
-          .hero-tagline { font-size: 1.2rem !important; max-width: 620px !important; }
-          .hero-grid .btn-primary,
-          .hero-grid .btn-outline,
-          .hero-grid .btn-ghost { font-size: 0.98rem; }
-          .hero-grid a { font-size: 0.95rem !important; }
-        }
-        @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; padding: 3rem 0 4rem !important; }
-          .hero-photo-wrap > div {
-            width: min(72vw, 320px) !important;
-            height: auto !important;
-            aspect-ratio: 11 / 13.5;
-          }
-        }
-      `}</style>
     </section>
   )
 }

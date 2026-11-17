@@ -119,7 +119,7 @@ export default function EntityFields({
 
                 .map((image, index) => (
                   <span className="admin-image-path" key={`${image}-${index}`}>
-                    <img src={image} alt="" />
+                    <img src={image} alt="" width={48} height={40} />
                     <code>{image}</code>
                     <button
                       type="button"

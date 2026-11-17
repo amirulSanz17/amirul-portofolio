@@ -164,6 +164,17 @@
 .admin-intro {
   margin-top: 0.5rem;
 }
+.admin-dashboard-error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.admin-dashboard-error p {
+  margin: 0;
+}
 .admin-dashboard-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -208,6 +219,13 @@
   color: var(--fg-muted);
   font-size: 0.82rem;
 }
+.admin-section-count {
+  margin-top: 0.9rem;
+  color: var(--fg);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
 .admin-card-link {
   margin-top: 1rem;
   font-size: 0.8rem;
@@ -248,11 +266,10 @@
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent);
   border-radius: var(--radius-sm);
-  background: linear-gradient(110deg, var(--accent-dim), var(--bg-card) 55%);
+  background: var(--bg-card);
 }
 .admin-record-card:nth-child(even) {
-  border-left-color: #45b8a5;
-  background: linear-gradient(110deg, rgba(69, 184, 165, 0.08), var(--bg-card) 55%);
+  border-left-color: var(--border);
 }
 .admin-record-card.selected {
   border-color: var(--accent);

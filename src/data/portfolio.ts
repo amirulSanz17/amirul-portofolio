@@ -9,9 +9,9 @@ export const profile = {
   instagram: "https://www.instagram.com/ichsanz_17",
   whatsapp: "https://wa.me/62895401327573",
   about:
-    "I am an Information Systems student passionate about technology, system analysis, product development, and digital solutions. I enjoy learning through hands-on projects, team collaboration, and real-world experiences — from web application development to IoT deployment and network infrastructure.",
-  education: "Information Systems — Universitas Singaperbangsa Karawang",
-  status: "Open to internship, Freelance, Project & collaboration",
+    "I am an Information Systems student passionate about technology, system analysis, product development, and digital solutions. I enjoy learning through hands-on projects, team collaboration, and real-world experiences, from web application development to IoT deployment and network infrastructure.",
+  education: "Information Systems | Universitas Singaperbangsa Karawang",
+  status: "Open to internship, Freelance, Project & Collaboration",
   interests: ["Bussiness Analyst", "Network Engineer", "Product Development", "Web Development"],
 };
 
@@ -60,7 +60,7 @@ export const experiences: Experience[] = [
     image:
       "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=500&fit=crop&auto=format",
     description:
-      "Contributed to the development of an integrated inspection and testing management system — conducting system analysis, requirements gathering, and building web application modules for operational efficiency.",
+      "Contributed to the development of an integrated inspection and testing management system, conducting system analysis, requirements gathering, and building web application modules for operational efficiency.",
     responsibilities: [
       "Conducted system analysis and requirements gathering",
       "Designed and developed web-based application modules",
@@ -142,7 +142,7 @@ export const projects: Project[] = [
     id: "proj-1",
     name: "Asteria Riksa Uji Integrated",
     description:
-      "Integrated web application for managing inspection and testing processes — streamlining operations, documenting results, and generating reports.",
+      "Integrated web application for managing inspection and testing processes, streamlining operations, documenting results, and generating reports.",
     role: "Full Stack Developer",
     category: "Web Application",
     tech: ["Laravel", "Tailwind CSS", "MySQL", "PHP"],
@@ -229,7 +229,7 @@ export interface Achievement {
 export const achievements: Achievement[] = [
   {
     id: "ach-1",
-    title: "2nd Place — Business Plan Competition",
+    title: "2nd Place: Business Plan Competition",
     event: "COMFAIR 2025",
     organizer: "Universitas XYZ",
     date: "November 2025",
@@ -246,7 +246,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: "ach-2",
-    title: "Best Project — Campus Tech Exhibition",
+    title: "Best Project: Campus Tech Exhibition",
     event: "EXPO TEKNOLOGI 2025",
     organizer: "Universitas Singaperbangsa Karawang",
     date: "September 2025",
@@ -333,7 +333,7 @@ export const activities: Activity[] = [
   },
   {
     id: "act-3",
-    title: "Business Plan Competition — COMFAIR 2025",
+    title: "Business Plan Competition: COMFAIR 2025",
     category: "Competition",
     date: "November 2025",
     location: "Karawang, Indonesia",
@@ -352,7 +352,7 @@ export const activities: Activity[] = [
   },
   {
     id: "act-4",
-    title: "Campus Student Council — Active Member",
+    title: "Campus Student Council: Active Member",
     category: "Organization",
     date: "2024 – 2025",
     location: "UNSIKA, Karawang",

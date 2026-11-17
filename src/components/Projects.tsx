@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import type { Project } from "../data/portfolio"
 import { supabase } from "../lib/supabase"
-import { adaptiveGrid } from "../utils/grid"
 import { sortByLatestDate } from "../utils/dateRange"
+import ContentCarousel from "./ContentCarousel"
 import { ProjectModal } from "./projects/ProjectModal"
 
 /**
@@ -32,8 +32,6 @@ import { ProjectModal } from "./projects/ProjectModal"
  */
 
 export default function Projects() {
-  const ref = useRef<HTMLElement>(null)
-
   const [projects, setProjects] = useState<Project[]>([])
   const [selected, setSelected] = useState<Project | null>(null)
 
@@ -41,93 +39,73 @@ export default function Projects() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const gridStyle = adaptiveGrid(projects.length)
-
   // ─────────────────────────────────────────────
   // FETCH PROJECTS DARI SUPABASE
   // ─────────────────────────────────────────────
   useEffect(() => {
+    let active = true
     const fetchProjects = async () => {
       setLoading(true)
       setError(null)
 
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .order("created_at", { ascending: false })
+      try {
+        const { data, error } = await supabase
+          .from("projects")
+          .select("*")
+          .order("created_at", { ascending: false })
+        if (!active) return
 
-      if (error) {
-        console.error("Supabase projects error:", error)
-        setError(error.message)
-        setLoading(false)
-        return
+        if (error) {
+          console.error("Supabase projects error:", error)
+          setError(error.message)
+          return
+        }
+
+        const formattedProjects: Project[] = sortByLatestDate(
+          (data ?? []).map((project) => ({
+            id: project.id,
+            name: project.name,
+            date: project.date ?? "",
+            description: project.description ?? "",
+            role: project.role ?? "",
+            category: project.category ?? "",
+            tech: project.tech ?? [],
+            image: project.image ?? "",
+            github: project.github ?? "",
+            demo: project.demo ?? "",
+            problem: project.problem ?? "",
+            solution: project.solution ?? "",
+            features: project.features ?? [],
+            screenshots: project.screenshots ?? [],
+          })),
+        )
+
+        setProjects(formattedProjects)
+      } catch (error) {
+        if (!active) return
+        console.error("Supabase projects request failed:", error)
+        setError(
+          error instanceof Error ? error.message : "Unexpected request error",
+        )
+      } finally {
+        if (active) setLoading(false)
       }
-
-      const formattedProjects: Project[] = sortByLatestDate((data ?? []).map((project) => ({
-        id: project.id,
-        name: project.name,
-        date: project.date ?? "",
-        description: project.description ?? "",
-        role: project.role ?? "",
-        category: project.category ?? "",
-        tech: project.tech ?? [],
-        image: project.image ?? "",
-        github: project.github ?? "",
-        demo: project.demo ?? "",
-        problem: project.problem ?? "",
-        solution: project.solution ?? "",
-        features: project.features ?? [],
-        screenshots: project.screenshots ?? [],
-      })))
-
-      setProjects(formattedProjects)
-      setLoading(false)
     }
 
-    fetchProjects()
-  }, [])
+    void fetchProjects()
 
-  // ─────────────────────────────────────────────
-  // SCROLL REVEAL ANIMATION
-  // ─────────────────────────────────────────────
-  useEffect(() => {
-    const el = ref.current
-
-    if (!el) return
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.querySelectorAll(".reveal").forEach((r, i) => {
-            ;(r as HTMLElement).style.transitionDelay = `${i * 0.09}s`
-            r.classList.add("visible")
-          })
-
-          obs.unobserve(entry.target)
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    obs.observe(el)
-
-    return () => obs.disconnect()
+    return () => {
+      active = false
+    }
   }, [])
 
   return (
     <>
-      <section
-        id="projects"
-        className="section"
-        ref={ref as React.RefObject<HTMLElement>}
-      >
+      <section id="projects" className="section">
         <div className="container">
-          <p className="section-label reveal">Projects</p>
+          <p className="section-label">Projects</p>
 
-          <h2
-            className="section-title reveal"
-            style={{ marginBottom: "2.5rem" }}
-          >
+          <h2 className="section-title" style={{ marginBottom: "2.5rem" }}>
             Things I've built
           </h2>
 
@@ -135,47 +113,30 @@ export default function Projects() {
               LOADING / ERROR / EMPTY / DATA
           ───────────────────────────────────────── */}
           {loading ? (
-            <div
-              style={{
-                padding: "2rem 0",
-                color: "var(--fg-muted)",
-                textAlign: "center",
-              }}
-            >
+            <p className="portfolio-state" data-state="loading" role="status">
               Loading projects...
-            </div>
+            </p>
           ) : error ? (
-            <div
-              style={{
-                padding: "2rem 0",
-                color: "var(--fg-muted)",
-                textAlign: "center",
-              }}
-            >
+            <p className="portfolio-state" data-state="error" role="alert">
               Failed to load projects: {error}
-            </div>
+            </p>
           ) : projects.length === 0 ? (
-            <div
-              style={{
-                padding: "2rem 0",
-                color: "var(--fg-muted)",
-                textAlign: "center",
-              }}
-            >
+            <p className="portfolio-state" data-state="empty">
               No projects available.
-            </div>
+            </p>
           ) : (
-            <div style={gridStyle} className="proj-grid">
-              {projects.map((project, i) => (
+            <ContentCarousel
+              className="proj-grid"
+              label="projects"
+              itemCount={projects.length}
+            >
+              {projects.map((project) => (
                 <article
                   key={project.id}
-                  className="card reveal"
+                  className="card"
                   style={{
                     overflow: "hidden",
-                    cursor: "pointer",
-                    transitionDelay: `${i * 0.09}s`,
                   }}
-                  onClick={() => setSelected(project)}
                 >
                   <div
                     style={{
@@ -189,17 +150,8 @@ export default function Projects() {
                       alt={project.name}
                       className="img-cover"
                       loading="lazy"
-                      style={{
-                        transition: "transform 0.4s ease",
-                      }}
-                      onMouseEnter={(e) =>
-                        ((e.currentTarget as HTMLImageElement).style.transform =
-                          "scale(1.06)")
-                      }
-                      onMouseLeave={(e) =>
-                        ((e.currentTarget as HTMLImageElement).style.transform =
-                          "scale(1)")
-                      }
+                      width={800}
+                      height={500}
                     />
                   </div>
 
@@ -278,10 +230,7 @@ export default function Projects() {
                           padding: "0.55rem 0.75rem",
                           fontSize: "0.8rem",
                         }}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setSelected(project)
-                        }}
+                        onClick={() => setSelected(project)}
                       >
                         View Project
                       </button>
@@ -296,7 +245,6 @@ export default function Projects() {
                             padding: "0.55rem 0.75rem",
                             cursor: "pointer",
                           }}
-                          onClick={(e) => e.stopPropagation()}
                           aria-label="GitHub"
                         >
                           <svg
@@ -313,7 +261,7 @@ export default function Projects() {
                   </div>
                 </article>
               ))}
-            </div>
+            </ContentCarousel>
           )}
         </div>
       </section>
@@ -321,22 +269,6 @@ export default function Projects() {
       {selected && (
         <ProjectModal project={selected} onClose={() => setSelected(null)} />
       )}
-
-      <style>{`
-        @media (max-width: 900px) {
-          .proj-grid {
-            grid-template-columns: 1fr !important;
-            max-width: none !important;
-          }
-        }
-
-        @media (min-width: 901px) and (max-width: 1100px) {
-          .proj-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            max-width: none !important;
-          }
-        }
-      `}</style>
     </>
   )
 }
