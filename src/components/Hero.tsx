@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { profile } from "../data/portfolio";
+import { profile } from "../data/portfolio"
 
 /**
  * ─── GANTI FOTO PROFIL ───────────────────────────────────────────────────────
@@ -9,29 +8,11 @@ import { profile } from "../data/portfolio";
  * Ukuran ideal:   min 600×750 px, format portrait.
  * ─────────────────────────────────────────────────────────────────────────────
  */
-const PROFILE_PHOTO = "/images/profile/image.jpeg";
+const PROFILE_PHOTO = "/images/profile/image.jpeg"
 
 export default function Hero() {
-  const photoRef = useRef<HTMLDivElement>(null);
-
   const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-
-  /* 3-D tilt on mouse move */
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = photoRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transform = `perspective(700px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.03)`;
-  };
-
-  const onLeave = () => {
-    if (photoRef.current)
-      photoRef.current.style.transform =
-        "perspective(700px) rotateY(0deg) rotateX(0deg) scale(1)";
-  };
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
 
   return (
     <section
@@ -46,21 +27,6 @@ export default function Hero() {
         overflow: "hidden",
       }}
     >
-      {/* subtle grid pattern */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.03,
-          backgroundImage:
-            "linear-gradient(var(--hero-grid) 1px, transparent 1px)," +
-            "linear-gradient(90deg, var(--hero-grid) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-          pointerEvents: "none",
-        }}
-      />
-
       <div
         className="container"
         style={{ position: "relative", zIndex: 1, width: "100%" }}
@@ -190,12 +156,12 @@ export default function Hero() {
                     cursor: "pointer",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "var(--fg)";
-                    e.currentTarget.style.transform = "translateY(-1px)";
+                    e.currentTarget.style.color = "var(--fg)"
+                    e.currentTarget.style.transform = "translateY(-1px)"
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "var(--fg-muted)";
-                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.color = "var(--fg-muted)"
+                    e.currentTarget.style.transform = "translateY(0)"
                   }}
                 >
                   <svg
@@ -226,12 +192,12 @@ export default function Hero() {
                   cursor: "pointer",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--fg)";
-                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.color = "var(--fg)"
+                  e.currentTarget.style.transform = "translateY(-1px)"
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "var(--fg-muted)";
-                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.color = "var(--fg-muted)"
+                  e.currentTarget.style.transform = "translateY(0)"
                 }}
               >
                 Email
@@ -239,16 +205,13 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ── Photo with 3D tilt ── */}
+          {/* ── Portrait ── */}
           <div
             className="hero-photo-wrap"
             style={{ display: "flex", justifyContent: "center" }}
           >
             <div
-              ref={photoRef}
               className="photo-tilt"
-              onMouseMove={onMove}
-              onMouseLeave={onLeave}
               style={{
                 width: "min(100%, 440px)",
                 maxWidth: "100%",
@@ -269,60 +232,12 @@ export default function Hero() {
                 className="img-cover"
                 style={{ transition: "transform 0.4s ease" }}
               />
-              {/* hover overlay */}
-              <div
-                className="photo-overlay"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(135deg, rgba(77,124,255,0.15) 0%, transparent 60%)",
-                  opacity: 0,
-                  transition: "opacity 0.3s",
-                  pointerEvents: "none",
-                }}
-              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* scroll cue */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "2rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "0.4rem",
-          color: "var(--fg-subtle)",
-          userSelect: "none",
-        }}
-      >
-        <span
-          style={{
-            fontSize: "0.6rem",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-          }}
-        >
-          Scroll
-        </span>
-        <div
-          style={{
-            width: 1,
-            height: 36,
-            background:
-              "linear-gradient(to bottom, var(--fg-subtle), transparent)",
-          }}
-        />
-      </div>
-
       <style>{`
-        .hero-grid:hover .photo-overlay { opacity: 1 !important; }
         @media (min-width: 769px) {
           .hero-grid {
             grid-template-columns: minmax(0, 1fr) minmax(280px, min(480px, 40vw)) !important;
@@ -347,5 +262,5 @@ export default function Hero() {
         }
       `}</style>
     </section>
-  );
+  )
 }

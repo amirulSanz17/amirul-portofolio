@@ -1,11 +1,20 @@
+import { useState } from "react"
+
 import EntityFields from "./EntityFields"
 
 import { useEntityManager } from "./entity-manager/useEntityManager"
 
 import type { EntityConfig } from "./types"
 
+function getDisplayValue(value: unknown) {
+  if (Array.isArray(value)) return value.map(String).filter(Boolean).join(", ")
+  if (value == null) return ""
+  return String(value).trim()
+}
+
 export default function EntityManager({ config }: { config: EntityConfig }) {
   const manager = useEntityManager(config)
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   return (
     <>
@@ -44,31 +53,113 @@ export default function EntityManager({ config }: { config: EntityConfig }) {
             <p className="admin-muted">Belum ada data.</p>
           ) : (
             <div className="admin-record-list">
-              {manager.rows.map((row) => (
-                <article
-                  key={String(row.id)}
-                  className={`admin-record ${
-                    manager.selected?.id === row.id ? "selected" : ""
-                  }`}
-                >
-                  <button
-                    type="button"
-                    className="admin-record-name"
-                    onClick={() => manager.editRow(row)}
-                  >
-                    {String(row[config.titleField] ?? "(Tanpa judul)")}
-                    <span className="admin-record-edit-label">Edit</span>
-                  </button>
+              {manager.rows.map((row) => {
+                const rowId = String(row.id)
+                const expanded = expandedId === rowId
+                const populatedFields = config.fields.filter((field) =>
+                  getDisplayValue(row[field.name]),
+                )
+                const previewFields = populatedFields
+                  .filter(
+                    (field) =>
+                      field.type !== "image" && field.type !== "images",
+                  )
+                  .slice(0, 2)
 
-                  <button
-                    type="button"
-                    className="admin-delete"
-                    onClick={() => void manager.deleteRow(row)}
+                return (
+                  <article
+                    key={rowId}
+                    className={`admin-record-card ${
+                      manager.selected?.id === row.id ? "selected" : ""
+                    }`}
                   >
-                    Hapus
-                  </button>
-                </article>
-              ))}
+                    <div className="admin-record-heading">
+                      <div className="admin-record-summary">
+                        <h3>
+                          {String(row[config.titleField] ?? "(Tanpa judul)")}
+                        </h3>
+                        {previewFields.map((field) => (
+                          <p key={field.name}>
+                            <span>{field.label}:</span>{" "}
+                            {getDisplayValue(row[field.name])}
+                          </p>
+                        ))}
+                      </div>
+                      <div className="admin-record-actions">
+                        <button
+                          type="button"
+                          className="admin-action-edit"
+                          onClick={() => manager.editRow(row)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          className="admin-delete"
+                          onClick={() => void manager.deleteRow(row)}
+                        >
+                          Hapus
+                        </button>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="admin-preview-toggle"
+                      aria-expanded={expanded}
+                      onClick={() => setExpandedId(expanded ? null : rowId)}
+                    >
+                      {expanded ? "Tutup detail" : "Lihat semua detail"}
+                      <span aria-hidden="true">{expanded ? "−" : "+"}</span>
+                    </button>
+
+                    {expanded && (
+                      <dl className="admin-record-details">
+                        {config.fields.map((field) => {
+                          const value = row[field.name]
+                          const values = Array.isArray(value)
+                            ? value.map(String).filter(Boolean)
+                            : value == null
+                              ? []
+                              : [String(value).trim()].filter(Boolean)
+                          const isImage =
+                            field.type === "image" || field.type === "images"
+
+                          return (
+                            <div
+                              key={field.name}
+                              className={`admin-record-detail ${
+                                isImage ? "admin-record-detail-images" : ""
+                              }`}
+                            >
+                              <dt>{field.label}</dt>
+                              <dd>
+                                {isImage && values.length > 0 ? (
+                                  <div className="admin-preview-images">
+                                    {values.map((image, index) => (
+                                      <img
+                                        key={`${image}-${index}`}
+                                        src={image}
+                                        alt={`${field.label} ${index + 1}`}
+                                      />
+                                    ))}
+                                  </div>
+                                ) : (
+                                  values.join(", ") || (
+                                    <span className="admin-muted">
+                                      Belum diisi
+                                    </span>
+                                  )
+                                )}
+                              </dd>
+                            </div>
+                          )
+                        })}
+                      </dl>
+                    )}
+                  </article>
+                )
+              })}
             </div>
           )}
         </section>

@@ -11,7 +11,7 @@ export const profile = {
   about:
     "I am an Information Systems student passionate about technology, system analysis, product development, and digital solutions. I enjoy learning through hands-on projects, team collaboration, and real-world experiences — from web application development to IoT deployment and network infrastructure.",
   education: "Information Systems — Universitas Singaperbangsa Karawang",
-  status: "Open to internship & collaboration",
+  status: "Open to internship, Freelance, Project & collaboration",
   interests: ["Bussiness Analyst", "Network Engineer", "Product Development", "Web Development"],
 };
 

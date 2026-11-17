@@ -1,5 +1,4 @@
-import { useEffect, useRef } from "react";
-import { profile } from "../data/portfolio";
+import { profile } from "../data/portfolio"
 
 /**
  * ─── GANTI FOTO ───────────────────────────────────────────────────────────────
@@ -9,60 +8,17 @@ import { profile } from "../data/portfolio";
  * Ukuran ideal:   500×600 px, portrait.
  * ─────────────────────────────────────────────────────────────────────────────
  */
-const PROFILE_PHOTO = "/images/profile/image.png";
+const PROFILE_PHOTO = "/images/profile/image.png"
 
 export default function About() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const photoRef = useRef<HTMLDivElement>(null);
-
-  /* scroll reveal */
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.querySelectorAll(".reveal").forEach((r, i) => {
-            (r as HTMLElement).style.transitionDelay = `${i * 0.07}s`;
-            r.classList.add("visible");
-          });
-          obs.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  /* tilt on photo */
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = photoRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    el.style.transform = `perspective(700px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) scale(1.02)`;
-  };
-
-  const onLeave = () => {
-    if (photoRef.current)
-      photoRef.current.style.transform =
-        "perspective(700px) rotateY(0deg) rotateX(0deg) scale(1)";
-  };
-
   const info = [
     { label: "Education", value: profile.education },
     { label: "Location", value: profile.location },
     { label: "Status", value: profile.status },
-  ];
+  ]
 
   return (
-    <section
-      id="about"
-      className="section section-alt"
-      ref={sectionRef as React.RefObject<HTMLElement>}
-    >
+    <section id="about" className="section section-alt">
       <div className="container">
         <div
           className="about-grid"
@@ -76,10 +32,7 @@ export default function About() {
           {/* ── Photo ── */}
           <div className="reveal about-photo-wrap">
             <div
-              ref={photoRef}
               className="photo-tilt"
-              onMouseMove={onMove}
-              onMouseLeave={onLeave}
               style={{
                 width: 360,
                 height: 440,
@@ -96,39 +49,6 @@ export default function About() {
                 src={PROFILE_PHOTO}
                 alt="Amirul Ichsandina"
                 className="img-cover"
-              />
-
-              {/* hover tint overlay */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(160deg, rgba(77,124,255,0.14) 0%, transparent 55%)",
-                  opacity: 0,
-                  transition: "opacity 0.3s",
-                  pointerEvents: "none",
-                }}
-                className="photo-hover-overlay"
-              />
-            </div>
-
-            {/* small accent line under photo */}
-            <div
-              style={{
-                marginTop: "0.75rem",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <div
-                style={{
-                  width: 36,
-                  height: 2,
-                  background: "var(--accent)",
-                  borderRadius: 2,
-                  opacity: 0.6,
-                }}
               />
             </div>
           </div>
@@ -223,7 +143,6 @@ export default function About() {
       </div>
 
       <style>{`
-        .about-photo-wrap:hover .photo-hover-overlay { opacity: 1 !important; }
         @media (min-width: 769px) {
           .about-grid {
             max-width: 1400px;
@@ -246,5 +165,5 @@ export default function About() {
         }
       `}</style>
     </section>
-  );
+  )
 }
