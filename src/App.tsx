@@ -47,7 +47,9 @@ export default function App() {
 
   return (
     <>
-      <Navbar theme={theme} toggleTheme={toggle} />
+      <header>
+        <Navbar theme={theme} toggleTheme={toggle} />
+      </header>
       <main>
         <Hero />
         <About />

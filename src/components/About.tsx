@@ -30,7 +30,7 @@ export default function About() {
           }}
         >
           {/* ── Photo ── */}
-          <div className="reveal about-photo-wrap">
+          <div className="about-photo-wrap">
             <div
               className="photo-tilt"
               style={{
@@ -49,17 +49,17 @@ export default function About() {
                 src={PROFILE_PHOTO}
                 alt="Amirul Ichsandina"
                 className="img-cover"
+                width={680}
+                height={840}
+                loading="lazy"
               />
             </div>
           </div>
 
           {/* ── Content ── */}
           <div className="about-content">
-            <p className="section-label reveal">About Me</p>
-            <h2
-              className="section-title reveal"
-              style={{ marginBottom: "1rem" }}
-            >
+            <p className="section-label">About Me</p>
+            <h2 className="section-title" style={{ marginBottom: "1rem" }}>
               A bit about myself
             </h2>
 
@@ -76,7 +76,6 @@ export default function About() {
             </p>
 
             <div
-              className="reveal"
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -117,7 +116,7 @@ export default function About() {
               ))}
             </div>
 
-            <div className="reveal">
+            <div>
               <p
                 style={{
                   fontSize: "0.68rem",
@@ -141,29 +140,6 @@ export default function About() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (min-width: 769px) {
-          .about-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            grid-template-columns: 360px minmax(0, 760px) !important;
-            gap: 6rem !important;
-            align-items: center !important;
-            justify-content: center;
-          }
-          .about-content .section-title { font-size: clamp(2.4rem, 3.5vw, 3.2rem); }
-          .about-description { font-size: 1.15rem !important; }
-          .about-info-label { font-size: 0.78rem !important; min-width: 96px !important; }
-          .about-info-value { font-size: 1rem !important; }
-          .about-content .tag { font-size: 0.82rem; }
-        }
-        @media (max-width: 700px) {
-          .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-          .about-photo-wrap { display: flex; flex-direction: column; align-items: center; }
-          .about-photo-wrap > div:first-child { width: 200px !important; height: 245px !important; }
-        }
-      `}</style>
     </section>
   )
 }

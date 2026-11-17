@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import type { Project } from "../../data/portfolio";
-import Lightbox from "../Lightbox";
+import { useEffect, useState } from "react"
+import type { Project } from "../../data/portfolio"
+import Lightbox from "../Lightbox"
 
 function CloseBtn({ onClick }: { onClick: () => void }) {
   return (
@@ -10,9 +10,9 @@ function CloseBtn({ onClick }: { onClick: () => void }) {
       style={{
         background: "rgba(255,255,255,0.06)",
         border: "1px solid var(--border-strong)",
-        borderRadius: "50%",
-        width: 34,
-        height: 34,
+        borderRadius: 4,
+        width: 44,
+        height: 44,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -22,12 +22,12 @@ function CloseBtn({ onClick }: { onClick: () => void }) {
         transition: "background 0.15s, color 0.15s",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = "rgba(255,255,255,0.12)";
-        e.currentTarget.style.color = "var(--fg)";
+        e.currentTarget.style.background = "rgba(255,255,255,0.12)"
+        e.currentTarget.style.color = "var(--fg)"
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-        e.currentTarget.style.color = "var(--fg-muted)";
+        e.currentTarget.style.background = "rgba(255,255,255,0.06)"
+        e.currentTarget.style.color = "var(--fg-muted)"
       }}
     >
       <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
@@ -39,7 +39,7 @@ function CloseBtn({ onClick }: { onClick: () => void }) {
         />
       </svg>
     </button>
-  );
+  )
 }
 
 function ModalLabel({ children }: { children: React.ReactNode }) {
@@ -56,40 +56,47 @@ function ModalLabel({ children }: { children: React.ReactNode }) {
     >
       {children}
     </p>
-  );
+  )
 }
 
 export function ProjectModal({
   project,
   onClose,
 }: {
-  project: Project;
-  onClose: () => void;
+  project: Project
+  onClose: () => void
 }) {
   const [lightbox, setLightbox] = useState<{
-    images: string[];
-    idx: number;
-  } | null>(null);
+    images: string[]
+    idx: number
+  } | null>(null)
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"
 
     const h = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+      if (e.key === "Escape") onClose()
+    }
 
-    window.addEventListener("keydown", h);
+    window.addEventListener("keydown", h)
 
     return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", h);
-    };
-  }, [onClose]);
+      document.body.style.overflow = ""
+      window.removeEventListener("keydown", h)
+    }
+  }, [onClose])
 
   return (
     <>
       <div className="modal-overlay" onClick={onClose}>
-        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="modal-content"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-dialog-title"
+          tabIndex={-1}
+          onClick={(e) => e.stopPropagation()}
+        >
           <div
             style={{
               aspectRatio: "16/7",
@@ -97,7 +104,13 @@ export function ProjectModal({
               overflow: "hidden",
             }}
           >
-            <img src={project.image} alt={project.name} className="img-cover" />
+            <img
+              src={project.image}
+              alt={project.name}
+              className="img-cover"
+              width={1200}
+              height={750}
+            />
           </div>
 
           <div style={{ padding: "1.75rem" }}>
@@ -121,6 +134,7 @@ export function ProjectModal({
                 </span>
 
                 <h2
+                  id="project-dialog-title"
                   style={{
                     fontFamily: "'Instrument Sans', sans-serif",
                     fontSize: "1.35rem",
@@ -293,8 +307,11 @@ export function ProjectModal({
                   }}
                 >
                   {project.screenshots.map((img, i) => (
-                    <div
+                    <button
+                      type="button"
+                      className="gallery-thumb"
                       key={i}
+                      aria-label={`View screenshot ${i + 1} of ${project.screenshots.length}`}
                       onClick={() =>
                         setLightbox({
                           images: project.screenshots,
@@ -308,6 +325,7 @@ export function ProjectModal({
                         cursor: "pointer",
                         background: "var(--bg-alt)",
                         border: "1px solid var(--border)",
+                        padding: 0,
                       }}
                     >
                       <img
@@ -315,21 +333,10 @@ export function ProjectModal({
                         alt={`Screenshot ${i + 1}`}
                         className="img-cover"
                         loading="lazy"
-                        style={{
-                          transition: "transform 0.3s",
-                        }}
-                        onMouseEnter={(e) =>
-                          ((
-                            e.currentTarget as HTMLImageElement
-                          ).style.transform = "scale(1.07)")
-                        }
-                        onMouseLeave={(e) =>
-                          ((
-                            e.currentTarget as HTMLImageElement
-                          ).style.transform = "scale(1)")
-                        }
+                        width={600}
+                        height={450}
                       />
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -377,5 +384,5 @@ export function ProjectModal({
         />
       )}
     </>
-  );
+  )
 }

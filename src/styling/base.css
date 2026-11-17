@@ -14,10 +14,6 @@ body {
   font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  transition:
-    background 0.3s,
-    color 0.3s;
 }
 
 h1,

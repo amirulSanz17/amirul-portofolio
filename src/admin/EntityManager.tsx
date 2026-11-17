@@ -141,6 +141,8 @@ export default function EntityManager({ config }: { config: EntityConfig }) {
                                         key={`${image}-${index}`}
                                         src={image}
                                         alt={`${field.label} ${index + 1}`}
+                                        width={96}
+                                        height={68}
                                       />
                                     ))}
                                   </div>
